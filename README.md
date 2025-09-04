@@ -8,11 +8,8 @@
 
 
 ## 📖 About
-**DorkHunter** is a Python-based tool that automates **Google Dorking** queries.  
-It helps penetration testers, bug bounty hunters, and security researchers quickly gather search results with optional output logging.  
+*DorkHunter* is a powerful and user-friendly Python tool for automating Google Dorking. It helps security researchers, penetration testers, and developers collect search results for advanced Google queries (dorks). Run a single query or larger pulls, rotate user-agents, and optionally save all findings to a file for later analysis.
 
-⚠️ **Disclaimer:** Use this tool only for **ethical security testing**.  
-The author is **not responsible** for any misuse.  
 
 ---
 
@@ -25,43 +22,30 @@ The author is **not responsible** for any misuse.
 
 ---
 
-## 🚀 Installation
-```bash
 
+## Create a virtual environment (optional but recommended):
+
+```
+python3 -m venv venv
+source venv/bin/activate        # On Windows (WSL2 shell is fine): source venv/bin/activate
+```
+
+## 🚀 Installation
+
+```
 git clone https://github.com/HARZE12/DorkHunter.git
 cd DorkHunter
-```
-# Install required dependency
-```
 pip install googlesearch-python
 ```
+
 ⚡ Usage
 ```
 python3 dorkhunter.py
 ```
 
-📂 Example Run
-```
-[+] Enter The Dork Search Query: site:example.com inurl:login
-[+] Enter Total Number of Results You Want (or type 'all' to fetch everything): 50
-[+] Do You Want to Save the Output? (Y/N): y
-[+] Enter Output Filename: example_dorks.txt
-
-[INFO] Searching... Please wait...
-
-[+] https://example.com/login.php
-[+] https://example.com/admin/
-[+] https://portal.example.com/auth
-
-[✔] Automation Done..
-```
 
 Results saved to example_dorks.txt ✅
 
 
-#📜 Legal Disclaimer
-
-This project is intended for educational and authorized penetration testing only.
-Do not use it against systems without explicit permission.
-The user is fully responsible for compliance with applicable laws.
-
+⚠️ **Disclaimer:** Use this tool only for **ethical security testing**.  
+The author is **not responsible** for any misuse.  
