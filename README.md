@@ -35,12 +35,26 @@ source venv/bin/activate        # On Windows (WSL2 shell is fine): source venv/b
 ```
 git clone https://github.com/HARZE12/DorkHunter.git
 cd DorkHunter
+```
+## Create a virtual environment (optional but recommended):
+
+```
+python3 -m venv venv
+source venv/bin/activate        # On Windows (WSL2 shell is fine): source venv/bin/activate
 pip install googlesearch-python
 ```
 
 ⚡ Usage
 ```
 python3 dorkhunter.py
+```
+
+
+##Dork Queries
+```
+https://www.exploit-db.com/google-hacking-database
+
+
 ```
 
 
