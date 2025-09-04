@@ -4,8 +4,6 @@
 from __future__ import print_function
 import sys
 import time
-import random
-import itertools
 
 # Attempt to import the googlesearch module
 try:
@@ -31,46 +29,19 @@ class Colors:
 # Default output filename
 log_file = "dorks_output.txt"
 
-# ====== User-Agent rotation ======
-
-DEFAULT_UAS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
-]
-
-def load_lines(path):
-    lines = []
-    with open(path, "r", encoding="utf-8") as f:
-        for raw in f:
-            s = raw.strip()
-            if s and not s.startswith("#"):
-                lines.append(s)
-    return lines
-
-def cycle_iter(lst):
-    return itertools.cycle(lst) if lst else itertools.cycle([None])
-
-def jitter(min_s=1.5, max_s=4.0):
-    t = random.uniform(min_s, max_s)
-    time.sleep(t)
-
 def logger(data):
     """Logs data to a file."""
     with open(log_file, "a", encoding="utf-8") as file:
         file.write(data + "\n")
 
 def dorks():
-    """Main function for handling Google Dorking with UA rotation (no proxies)."""
+    """Main function for handling Google Dorking."""
     global log_file
-
     try:
-        # --- Query + limits ---
         dork = input(f"{Colors.BLUE}\n[+] Enter The Dork Search Query: {Colors.RESET}")
-
+        
         user_choice = input(f"{Colors.BLUE}[+] Enter Total Number of Results You Want (or type 'all' to fetch everything): {Colors.RESET}").strip().lower()
+        
         if user_choice == "all":
             total_results = float("inf")
         else:
@@ -81,92 +52,35 @@ def dorks():
             except ValueError:
                 print(f"{Colors.RED}[ERROR] Invalid number entered! Please enter a positive integer or 'all'.{Colors.RESET}")
                 return
-
-        # --- Output settings ---
+        
         save_output = input(f"{Colors.BLUE}\n[+] Do You Want to Save the Output? (Y/N): {Colors.RESET}").strip().lower()
         if save_output == "y":
-            log_file_in = input(f"{Colors.BLUE}[+] Enter Output Filename: {Colors.RESET}").strip()
-            if log_file_in:
-                log_file_in = log_file_in if log_file_in.endswith(".txt") else (log_file_in + ".txt")
-                log_file = log_file_in
-            else:
+            log_file = input(f"{Colors.BLUE}[+] Enter Output Filename: {Colors.RESET}").strip()
+            if not log_file:
                 log_file = "dorks_output.txt"
-
-        # --- User-Agent rotation setup ---
-        use_ua_file = input(f"{Colors.BLUE}\n[+] Load user-agents from file? (Y/N): {Colors.RESET}").strip().lower() == "y"
-        if use_ua_file:
-            ua_path = input(f"{Colors.BLUE}[+] Path to user-agents file (one per line): {Colors.RESET}").strip()
-            try:
-                user_agents = load_lines(ua_path)
-                if not user_agents:
-                    print(f"{Colors.YELLOW}[!] No UAs found in file. Falling back to defaults.{Colors.RESET}")
-                    user_agents = DEFAULT_UAS
-            except Exception as e:
-                print(f"{Colors.YELLOW}[!] Could not read UA file: {e}. Using defaults.{Colors.RESET}")
-                user_agents = DEFAULT_UAS
-        else:
-            user_agents = DEFAULT_UAS
-
-        ua_cycle = cycle_iter(user_agents)
-
-        # --- Crawl pacing ---
-        try:
-            min_delay = float(input(f"{Colors.BLUE}\n[+] Min delay between requests (seconds, default 1.5): {Colors.RESET}") or 1.5)
-            max_delay = float(input(f"{Colors.BLUE}[+] Max delay between requests (seconds, default 4.0): {Colors.RESET}") or 4.0)
-            if max_delay < min_delay:
-                min_delay, max_delay = max_delay, min_delay
-        except ValueError:
-            min_delay, max_delay = 1.5, 4.0
-
-        print(f"\n{Colors.GREEN}[INFO] Searching with user-agent rotation... Please wait...{Colors.RESET}\n")
-
+            if not log_file.endswith(".txt"):
+                log_file += ".txt"
+        
+        print(f"\n{Colors.GREEN}[INFO] Searching... Please wait...{Colors.RESET}\n")
+        
         fetched = 0
-        start = 0
-
-        while fetched < total_results:
-            remaining = min(50, total_results - fetched) if total_results != float("inf") else 50
-
-            # Rotate UA for this batch
-            ua = next(ua_cycle)
-
-            urls_found = False
-            try:
-                for result in search(
-                    dork,
-                    num=remaining,
-                    start=start,
-                    user_agent=ua,  # googlesearch-python supports this kwarg
-                ):
-                    urls_found = True
-                    print(f"{Colors.YELLOW}[+] {Colors.RESET}{result}")
-                    if save_output == "y":
-                        logger(result)
-                    fetched += 1
-                    if total_results != float("inf") and fetched >= total_results:
-                        break
-
-                    # Per-result jitter
-                    time.sleep(random.uniform(min_delay, max_delay))
-
-            except KeyboardInterrupt:
-                raise
-            except Exception as e:
-                print(f"{Colors.RED}[ERROR] Batch failed (maybe rate-limited): {e}{Colors.RESET}")
-
-            if not urls_found:
-                break  # Stop if no more results are returned
-
-            start += remaining
-
-            # Small pause between batches
-            jitter(min_delay, max_delay)
-
+        
+        for result in search(dork):
+            if fetched >= total_results:
+                break
+            print(f"{Colors.YELLOW}[+] {Colors.RESET}{result}")
+            
+            if save_output == "y":
+                logger(result)
+            
+            fetched += 1
+        
     except KeyboardInterrupt:
         print(f"\n{Colors.RED}[!] User Interruption Detected! Exiting...{Colors.RESET}\n")
         sys.exit(1)
     except Exception as e:
         print(f"{Colors.RED}[ERROR] {str(e)}{Colors.RESET}")
-
+    
     print(f"{Colors.GREEN}\n[✔] Automation Done..{Colors.RESET}")
     sys.exit()
 
