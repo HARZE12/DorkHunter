@@ -40,6 +40,25 @@ pip install googlesearch-python
 python3 dorkhunter.py
 ```
 
+📂 Example Run
+```
+[+] Enter The Dork Search Query: site:example.com inurl:login
+[+] Enter Total Number of Results You Want (or type 'all' to fetch everything): 50
+[+] Do You Want to Save the Output? (Y/N): y
+[+] Enter Output Filename: example_dorks.txt
+
+[INFO] Searching... Please wait...
+
+[+] https://example.com/login.php
+[+] https://example.com/admin/
+[+] https://portal.example.com/auth
+
+[✔] Automation Done..
+```
+
+Results saved to example_dorks.txt ✅
+
+
 #📜 Legal Disclaimer
 
 This project is intended for educational and authorized penetration testing only.
