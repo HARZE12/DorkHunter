@@ -35,7 +35,7 @@ cd DorkHunter
 ```
 pip install googlesearch-python
 ```
-##⚡ Usage
+⚡ Usage
 ```
 python3 dorkhunter.py
 ```
