@@ -44,8 +44,5 @@ python3 dorkhunter.py
 ```
 
 
-Results saved to example_dorks.txt ✅
-
-
 ⚠️ **Disclaimer:** Use this tool only for **ethical security testing**.  
 The author is **not responsible** for any misuse.  
