@@ -50,11 +50,9 @@ python3 dorkhunter.py
 ```
 
 
-##Dork Queries
+Dork Queries
 ```
 https://www.exploit-db.com/google-hacking-database
-
-
 ```
 
 
