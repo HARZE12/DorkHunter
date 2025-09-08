@@ -23,13 +23,6 @@
 ---
 
 
-## Create a virtual environment (optional but recommended):
-
-```
-python3 -m venv venv
-source venv/bin/activate        # On Windows (WSL2 shell is fine): source venv/bin/activate
-```
-
 ## 🚀 Installation
 
 ```
