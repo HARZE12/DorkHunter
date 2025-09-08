@@ -8,7 +8,7 @@
 
 
 ## 📖 About
-*DorkHunter* is a powerful and user-friendly Python tool for automating Google Dorking. It helps security researchers, penetration testers, and developers collect search results for advanced Google queries (dorks). Run a single query or larger pulls, rotate user-agents, and optionally save all findings to a file for later analysis.
+*DorkHunter* is a powerful and user-friendly Python tool for automating Google Dorking. It helps security researchers, penetration testers, and developers collect search results for advanced Google queries (dorks). Run a single query or larger pulls, and optionally save all findings to a file for later analysis.
 
 
 ---
